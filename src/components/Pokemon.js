@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import { Card} from 'react-bootstrap';
+import { Card, ListGroup} from 'react-bootstrap';
+import Types from './Types';
 class Pokemon extends Component {
     state = {
         error: null,
@@ -36,16 +37,19 @@ class Pokemon extends Component {
             return (
                 <Card>
                     <Card.Img variant="top" src={items.sprites.front_default} style={{imageRendering: "pixelated"}}/>
-                    <Card.Body>
-                        <Card.Title> {items.name}</Card.Title>
-                        <Card.Text>
-                            Base experience: { items.base_experience } <br/>
-                            Height: { items.height } <br/>
-                            Weight: { items.weight } <br/>
-                        </Card.Text>
-                    </Card.Body>
+                    <Card.Header>{items.name}</Card.Header>
+                    <ListGroup variant="flush">
+                      <ListGroup.Item>Base experience: { items.base_experience }</ListGroup.Item>
+                      <ListGroup.Item>Height: { items.height }</ListGroup.Item>
+                      <ListGroup.Item>Weight: { items.weight }</ListGroup.Item>
+                      <ListGroup.Item>Id: { items.id }</ListGroup.Item>
+                    </ListGroup>
                     <Card.Footer>
-                        <small className="text-muted">Last updated 3 mins ago</small>
+                        {
+                          items.types.map( (item, index) => (
+                            <Types name={item.type.name} key={index} />
+                          ))
+                        }
                     </Card.Footer>
                 </Card>
             )
