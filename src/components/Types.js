@@ -69,7 +69,7 @@ class Types extends Component {
             default:
                 break;
         }
-        return <Badge variant="primary" style={{background: color}}>{this.props.name}</Badge>;
+        return <Badge variant="primary" style={{background: color}} className="mr-1">{this.props.name}</Badge>;
     };
 }
 export default Types
