@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import { CardColumns, Col, ButtonGroup, Button, Spinner, Navbar, Nav, Form, FormControl } from 'react-bootstrap';
+import { CardColumns, Col, ButtonGroup, Button,
+   Spinner, Navbar, Nav, Form, FormControl,
+   ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Pokemon from './Pokemon'
 
 class Pokelist extends Component {
@@ -8,7 +10,8 @@ class Pokelist extends Component {
         limit: 10,
         error: null,
         isLoaded: false,
-        items: []
+        items: [],
+        search: ""
     };
 
     componentDidMount() {
@@ -16,7 +19,7 @@ class Pokelist extends Component {
       }
 
     fetchData = () => {
-      fetch("https://pokeapi.co/api/v2/pokemon/?offset=" + this.state.offset + "&limit=" + this.state.limit)
+      fetch("https://pokeapi.co/api/v2/pokemon/?offset=&limit=1000")
         .then(res => res.json())
         .then(
           (result) => {
@@ -35,11 +38,11 @@ class Pokelist extends Component {
     }
   
     previousPage = () => {
-      this.setState({ offset: this.state.offset - this.state.limit }, this.fetchData);
+      this.setState({ offset: this.state.offset - this.state.limit });
     }
 
     nestPage = () => {
-      this.setState({ offset: this.state.offset + this.state.limit }, this.fetchData);  
+      this.setState({ offset: this.state.offset + this.state.limit });  
     }
 
     pageLimit = (limit) => {
@@ -47,11 +50,22 @@ class Pokelist extends Component {
         {
           offset: 0,
           limit: limit
-        },
-          this.fetchData
-        );  
+        });  
     }
-
+    manageItems = (items) => {
+      let search = this.state.search === ""? items.results : items.results.filter(item => item.name.includes(this.state.search));
+      let newItems = search.slice(this.state.offset,this.state.offset + this.state.limit);
+      newItems.maxValue = search.length;
+      return newItems;
+    }
+    handleChange = (event) => {
+      const input = event.target;
+      this.setState({ [input.name]: input.value });
+    };
+    handleFormSubmit = (event) => {
+      event.preventDefault();
+    }
+   
     render() {
         const { error, isLoaded, items } = this.state;
         if (error) {
@@ -63,6 +77,8 @@ class Pokelist extends Component {
               </Spinner>
             );
         } else {
+          let managedItems = this.manageItems(items);
+          const handleChange = val => this.pageLimit(val);
             return (
                 <Col>
                   <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
@@ -70,25 +86,24 @@ class Pokelist extends Component {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                       <Nav className="mr-auto">
-                        <ButtonGroup className="ml-3">
-                          <Button variant="outline-primary" onClick={(e) => this.pageLimit(10, e)}>10</Button>
-                          <Button variant="outline-primary" onClick={(e) => this.pageLimit(20, e)}>20</Button>
-                          <Button variant="outline-primary" onClick={(e) => this.pageLimit(50, e)}>50</Button>
-                        </ButtonGroup>
+                        <ToggleButtonGroup type="radio" onChange={handleChange} name="option" defaultValue={10}>
+                          <ToggleButton value={10}>Option 1</ToggleButton>
+                          <ToggleButton value={20}>Option 2</ToggleButton>
+                          <ToggleButton value={50}>Option 3</ToggleButton>
+                        </ToggleButtonGroup>
                         <ButtonGroup className="ml-3">
                         <Button variant="primary" disabled> Page: {this.state.offset / this.state.limit + 1} </Button>
-                        {items.previous != null? <Button variant="primary" onClick={this.previousPage}>Previous page</Button>:""}
-                        {items.next != null? <Button variant="primary" onClick={this.nestPage}>Next page</Button>:""}
+                        {this.state.offset !== 0? <Button variant="primary" onClick={this.previousPage}>Previous page</Button>:""}
+                        {this.state.offset + this.state.limit < managedItems.maxValue? <Button variant="primary" onClick={this.nestPage}>Next page</Button>:""}
                       </ButtonGroup>
                       </Nav>
-                      <Form inline>
-                        <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button variant="outline-info">Search</Button>
+                      <Form inline onSubmit={this.handleFormSubmit}>
+                        <FormControl type="text" placeholder="Search" className="mr-sm-2" name="search" value={this.state.search} onChange={this.handleChange}/>
                       </Form>
                     </Navbar.Collapse>
                   </Navbar>
-                  <CardColumns className="mt-5">
-                  {items.results.map(item => (
+                  <CardColumns className="mt-6">
+                  {managedItems.map(item => (
                       <Pokemon url={item.url} key={item.name}/>
                   ))}
                   </CardColumns>

@@ -27,6 +27,7 @@ class Pokeinfo extends Component {
                     </Col>
                     <Col xs={12} md={7}>
                         <Table responsive>
+                            <tbody>
                             <tr>
                                 <td>Height</td>
                                 <td>{item.height}</td>
@@ -59,12 +60,14 @@ class Pokeinfo extends Component {
                                 }
                                 </td>
                             </tr>
+                            </tbody>
                         </Table>
                     </Col>                    
                 </Row>
                 <Row>
                     <Col xs={12}>
                         <Table responsive>
+                        <tbody>
                             <tr>
                                 <td style={{width: "150px"}}>HP</td>
                                 <td>
@@ -107,6 +110,7 @@ class Pokeinfo extends Component {
                                     variant="info" label={item.stats[0].base_stat} max="200"/>
                                 </td>
                             </tr>
+                            </tbody>
                         </Table>
                     </Col>
                 </Row>

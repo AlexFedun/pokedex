@@ -27,3 +27,6 @@
 .card {
     cursor: pointer;
 }
+.mt-6{
+    margin-top: 4rem!important;
+}
