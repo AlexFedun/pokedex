@@ -16,8 +16,15 @@ class TypeModal extends Component {
         });
         this.setState({selected:res})
     }
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.show !== this.props.show)
+            return true;
+        else
+            return false;
+    }
 
     render() {
+        this.setState({selected:null});
         return (
             <Modal {...{show:this.props.show, onHide:this.props.onHide}} aria-labelledby="contained-modal-title-vcenter" centered >
                 <Modal.Header closeButton>
@@ -58,7 +65,7 @@ class TypeModal extends Component {
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => this.props.setType(this.state.selected)}>Close</Button>
+                    <Button onClick={() => this.props.setType(this.state.selected)}>Save</Button>
                 </Modal.Footer>
             </Modal>
         )

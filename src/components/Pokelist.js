@@ -115,7 +115,7 @@ class Pokelist extends Component {
                   </Navbar>
 
                   <TypeModal show={this.state.typesModal} onHide={() => this.setState({typesModal: false})}
-                   setType={
+                    setType={
                       (types) => this.setState({slectedTypes: types},
                         () => this.setState({typesModal: false},
                           this.fetchData)

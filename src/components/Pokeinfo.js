@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import { Modal, Button, Container, Row, Col, Image, Table, ProgressBar} from 'react-bootstrap';
+import { Modal, Button, Container, Row, Col, Image, Table} from 'react-bootstrap';
 import Types from './Types';
+import StatsAndSpecies from './StatsAndSpecies';
 
 class Pokeinfo extends Component {
 
@@ -64,56 +65,7 @@ class Pokeinfo extends Component {
                         </Table>
                     </Col>                    
                 </Row>
-                <Row>
-                    <Col xs={12}>
-                        <Table responsive>
-                        <tbody>
-                            <tr>
-                                <td style={{width: "150px"}}>HP</td>
-                                <td>
-                                    <ProgressBar animated now={item.stats[5].base_stat}
-                                    variant="info" label={item.stats[5].base_stat} max="200"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Attack</td>
-                                <td >
-                                    <ProgressBar animated now={item.stats[4].base_stat}
-                                    variant="info" label={item.stats[4].base_stat} max="200"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Defense</td>
-                                <td >
-                                    <ProgressBar animated now={item.stats[3].base_stat}
-                                    variant="info" label={item.stats[3].base_stat} max="200"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Special Attack</td>
-                                <td >
-                                    <ProgressBar animated now={item.stats[2].base_stat}
-                                    variant="info" label={item.stats[2].base_stat} max="200"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Special Defense</td>
-                                <td >
-                                    <ProgressBar animated now={item.stats[1].base_stat}
-                                    variant="info" label={item.stats[1].base_stat} max="200"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Speed</td>
-                                <td>
-                                    <ProgressBar animated now={item.stats[0].base_stat}
-                                    variant="info" label={item.stats[0].base_stat} max="200"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </Table>
-                    </Col>
-                </Row>
+                <StatsAndSpecies stats={item.stats} species={item.species.url} />
             </Container>
             </Modal.Body>
             <Modal.Footer>
